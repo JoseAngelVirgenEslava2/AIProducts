@@ -1,7 +1,7 @@
-import { FaHeart, FaSearch, FaFilter, FaUser } from "react-icons/fa";
-import { IoIosInformationCircle } from "react-icons/io";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import Link from "next/link";
+import { FaHeart, FaSearch, FaFilter, FaUser } from 'react-icons/fa';
+import { IoIosInformationCircle } from 'react-icons/io';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -54,17 +54,17 @@ export default function Home() {
         {/* Iconos de Navegación Lateral */}
         <div className="flex flex-col items-center justify-center p-4 border-l border-gray-200">
           <div className="p-4 border-2 border-solid mb-6 mt-6 hover:bg-gray-100 transition-colors cursor-pointer">
-            <Link href={"/favorites"}>
+            <Link href="/favorites">
               <FaHeart size={30} />
             </Link>
           </div>
           <div className="p-4 border-2 border-solid mb-6 hover:bg-gray-100 transition-colors cursor-pointer">
-            <Link href={"/login"}>
+            <Link href="/login">
               <FaUser size={30} />
             </Link>
           </div>
           <div className="p-4 border-2 border-solid mb-6 hover:bg-gray-100 transition-colors cursor-pointer">
-            <Link href={"/about"}>
+            <Link href="/about">
               <IoIosInformationCircle size={30} />
             </Link>
           </div>
