@@ -3,9 +3,9 @@ export class Product {
     public id: string,
     public name: string,
     public price: number,
-    public currency: string,
+    public currency: string, // <-- Este campo es requerido por tu constructor
     public url: string,
-    public source: string,
-    public lastChecked: Date = new Date()
+    public image: string,
+    public source: string
   ) {}
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FaHeart, FaArrowLeft, FaUser } from 'react-icons/fa';
 import { IoIosInformationCircle } from 'react-icons/io';
 import Link from 'next/link';
@@ -17,6 +17,9 @@ export default function LoginPage() {
   const router = useRouter();
   const [session, setSession] = useState<DecodedJWT | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   /* ------------------------------------------------------------------
    * Comprobamos si existe un JWT válido en localStorage. Si existe y no
@@ -43,17 +46,49 @@ export default function LoginPage() {
 
   const handleGoBack = () => router.back();
 
-  /* ------------------------------------------------------------------
-   * Dummy handlers (en producción harías peticiones a /api/login, etc.)
-   * ------------------------------------------------------------------ */
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: llamar a API y guardar jwt en localStorage
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (!email || !password) return;
+  
+    const res = await fetch('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  
+    const data = await res.json();
+    if (res.ok && data.token) {
+      localStorage.setItem('jwt', data.token);
+      const decoded: DecodedJWT = jwtDecode(data.token);
+      setSession(decoded);
+    } else {
+      alert(data.error || 'Error al iniciar sesión');
+    }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: llamar a API registro, guardar jwt en localStorage
+    const name = nameRef.current?.value;
+    const email = emailRef.current?.value;
+    const password = passwordRef.current?.value;
+    if (!name || !email || !password) return;
+  
+    const res = await fetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, email, password }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+  
+    const data = await res.json();
+    if (res.ok && data.token) {
+      localStorage.setItem('jwt', data.token);
+      const decoded: DecodedJWT = jwtDecode(data.token);
+      setSession(decoded);
+    } else {
+      alert(data.error || 'Error al registrar');
+    }
   };
 
   /* ------------------------------------------------------------------
@@ -121,12 +156,14 @@ export default function LoginPage() {
                 type="email"
                 placeholder="Correo electrónico"
                 required
+                ref={emailRef}
                 className="w-full py-4 px-6 mb-6 bg-purple-50 rounded-lg text-lg placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <input
                 type="password"
                 placeholder="Contraseña"
                 required
+                ref={passwordRef}
                 className="w-full py-4 px-6 mb-12 bg-purple-50 rounded-lg text-lg placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <button
@@ -149,18 +186,21 @@ export default function LoginPage() {
                 type="text"
                 placeholder="Nombre"
                 required
+                ref={nameRef}
                 className="w-full py-4 px-6 mb-6 bg-purple-50 rounded-lg text-lg placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <input
                 type="email"
                 placeholder="Correo electrónico"
                 required
+                ref={emailRef}
                 className="w-full py-4 px-6 mb-6 bg-purple-50 rounded-lg text-lg placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <input
                 type="password"
                 placeholder="Contraseña"
                 required
+                ref={passwordRef}
                 className="w-full py-4 px-6 mb-12 bg-purple-50 rounded-lg text-lg placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-300"
               />
               <button
