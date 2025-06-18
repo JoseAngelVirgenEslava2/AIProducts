@@ -4,6 +4,7 @@ import { UserModel } from '@/app/Persistence/UserSchema';
 
 export async function POST(req: Request) {
   await connectDB();
+  
   const { email, password, name } = await req.json();
 
   const exists = await UserModel.findOne({ email });
