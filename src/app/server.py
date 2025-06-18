@@ -7,30 +7,25 @@ from bs4 import BeautifulSoup
 from collections import namedtuple
 import os
 from dotenv import load_dotenv
-
-# Importar PyMongo, bcrypt y PyJWT
 from pymongo import MongoClient
-from bson.objectid import ObjectId # Importar ObjectId
+from bson.objectid import ObjectId
 import bcrypt
 import jwt
 from datetime import datetime, timedelta
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app) # Habilita CORS para todas las rutas
+CORS(app)
 
-# --- Configuración de MongoDB Atlas ---
 MONGO_URI = os.getenv('MONGO_URI')
 if not MONGO_URI:
     print("ERROR: MONGO_URI no está configurada en el archivo .env")
-    # No salimos aquí, la aplicación continuará pero los endpoints de DB fallarán
     client = None
     db_mongo = None
     users_collection = None
 else:
     try:
         client = MongoClient(MONGO_URI)
-        # Reemplaza 'your_database_name' con el nombre de tu base de datos en Atlas
         db_mongo = client.get_database('scrapper') 
         users_collection = db_mongo.get_collection('users')
         print("Conexión a MongoDB Atlas establecida correctamente.")
@@ -40,21 +35,13 @@ else:
         db_mongo = None
         users_collection = None
 
-# --- Comprobación inicial de colecciones (para depuración) ---
-
-# --- Configuración JWT ---
 JWT_SECRET = os.getenv('JWT_SECRET')
 if not JWT_SECRET:
     print("ERROR: JWT_SECRET no está configurada en el archivo .env")
-    # No salimos, los endpoints JWT fallarán
-    JWT_SECRET = "supersecretfallbackkey_change_me_in_prod" # Fallback para evitar errores, PERO INSEGURO
-
-# Configuración de la API de Gemini
+    JWT_SECRET = "supersecretfallbackkey_change_me_in_prod"
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 GEMINI_API_URL = f'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={GEMINI_API_KEY}'
 
-# Define una estructura para tus artículos, incluyendo historical_deal_score para IA
-# RENOMBRADOS: 'ratings' a 'seller_rating', 'reviews' a 'seller_reviews'
 Articulo = namedtuple('Articulo', ['id', 'name', 'price', 'bef_price', 'currency', 'url', 'image', 'source', 
                                    'seller_rating', 'seller_reviews', 'historical_deal_score'])
 
@@ -87,7 +74,6 @@ def search_mercadolibre():
                 nombre_tag = articulo_tag.find('h3', class_='poly-component__title-wrapper')
             nombre = nombre_tag.text.strip() if nombre_tag else 'N/A'
             
-            # Seller Rating (CORREGIDO)
             seller_rating = None
             seller_rating_tag = articulo_tag.find('span', class_='poly-reviews__rating')
             if seller_rating_tag:
@@ -96,7 +82,6 @@ def search_mercadolibre():
                 except ValueError:
                     seller_rating = None
 
-            # Seller Reviews (CORREGIDO)
             seller_reviews = None
             seller_reviews_tag = articulo_tag.find('span', class_='poly-reviews__total')
             if seller_reviews_tag:
@@ -157,8 +142,8 @@ def search_mercadolibre():
                         url=product_url,
                         image=image_url,
                         source='MercadoLibre',
-                        seller_rating=seller_rating, # Usar seller_rating
-                        seller_reviews=seller_reviews, # Usar seller_reviews
+                        seller_rating=seller_rating,
+                        seller_reviews=seller_reviews,
                         historical_deal_score=simulated_historical_deal_score
                     )
                 )
@@ -196,8 +181,8 @@ def analyze_products():
             discount_percentage = ((bef_price - current_price) / bef_price) * 100
             discount_info = f", con un descuento del {discount_percentage:.1f}% sobre su precio anterior de {p['currency']} {bef_price:.2f}"
         
-        rating_info = f"{p.get('seller_rating', 'N/A')} estrellas" # Usar .get() para seguridad
-        reviews_info = f"{p.get('seller_reviews', 'N/A')} reseñas" # Usar .get() para seguridad
+        rating_info = f"{p.get('seller_rating', 'N/A')} estrellas"
+        reviews_info = f"{p.get('seller_reviews', 'N/A')} reseñas"
 
         historical_score_info = p.get('historical_deal_score', 'N/A')
 
@@ -275,12 +260,8 @@ def analyze_products():
         traceback.print_exc()
         return jsonify({"error": f"Error interno del servidor al analizar con IA: {e}"}), 500
 
-# --- ENDPOINTS DE AUTENTICACIÓN Y FAVORITOS CON MONGODB ---
 @app.route('/register', methods=['POST'])
 def register_user():
-    if not users_collection: # Usar la colección directamente para la verificación
-        return jsonify({"error": "Conexión a la base de datos no disponible para usuarios."}), 500
-    
     data = request.json
     email = data.get('email')
     password = data.get('password')
@@ -350,7 +331,6 @@ def login_user():
         traceback.print_exc()
         return jsonify({"error": f"Error interno del servidor al iniciar sesión: {e}"}), 500
 
-# --- Función para verificar token (middleware de autenticación) ---
 def verify_token(req):
     auth_header = req.headers.get('Authorization')
     if not auth_header or not auth_header.startswith('Bearer '):
@@ -371,7 +351,6 @@ def verify_token(req):
         traceback.print_exc()
         return None, f"Error al verificar token: {e}", 500
 
-# --- NUEVO ENDPOINT PARA AGREGAR PRODUCTOS A FAVORITOS ---
 @app.route('/favorites/add', methods=['POST'])
 def add_favorite_product():
     uid, error, status_code = verify_token(request)
@@ -382,7 +361,6 @@ def add_favorite_product():
     if not product_data:
         return jsonify({"error": "Datos del producto requeridos."}), 400
 
-    # Extraer solo los campos relevantes para guardar en favoritos
     favorite_product = {
         "id": product_data.get('id'),
         "name": product_data.get('name'),
@@ -391,7 +369,7 @@ def add_favorite_product():
         "url": product_data.get('url'),
         "image": product_data.get('image'),
         "source": product_data.get('source'),
-        "addedAt": datetime.now() # Fecha de adición
+        "addedAt": datetime.now()
     }
 
     # Validar campos esenciales
@@ -458,8 +436,6 @@ def remove_favorite_product():
 
     try:
         user_object_id = ObjectId(uid)
-        
-        # Usar $pull para eliminar el producto que coincida con el 'id'
         update_result = users_collection.update_one(
             {'_id': user_object_id},
             {'$pull': {'favorites.products': {'id': product_id}}}

@@ -7,27 +7,25 @@ import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Interfaz Product con campos para el análisis (actualizada con seller_rating, seller_reviews y historical_deal_score)
 interface Product {
   id: string;
   name: string;
   price: number;
-  bef_price: number | null; // Precio anterior
+  bef_price: number | null;
   currency: string;
   url: string;
   image: string;
   source: string;
-  seller_rating: number | null; // Calificación del vendedor (estrellas, ej. 4.5) - CORREGIDO
-  seller_reviews: number | null; // Cantidad de reseñas del vendedor (ej. 1234) - CORREGIDO
-  historical_deal_score: number | null; // Puntaje simulado de oferta histórica
-  // Campos añadidos dinámicamente por el análisis de IA
+  seller_rating: number | null;
+  seller_reviews: number | null;
+  historical_deal_score: number | null;
   score?: number; 
   discount_percentage?: number;
   best_time_to_buy_message?: string;
-  reasoning?: string; // Explicación de la IA
+  reasoning?: string;
 }
 
-const PRODUCTS_PER_PAGE = 10; // Cantidad de productos a mostrar por sección/carga
+const PRODUCTS_PER_PAGE = 10;
 
 export default function Home() {
   const [query, setQuery] = useState('');
@@ -125,8 +123,8 @@ export default function Home() {
       price: p.price,
       bef_price: p.bef_price,
       currency: p.currency,
-      seller_rating: p.seller_rating, // Correcto
-      seller_reviews: p.seller_reviews, // Correcto
+      seller_rating: p.seller_rating,
+      seller_reviews: p.seller_reviews,
       historical_deal_score: p.historical_deal_score
     }));
 
@@ -206,7 +204,6 @@ export default function Home() {
         url: product.url,
         image: product.image,
         source: product.source,
-        // No enviamos historical_deal_score, seller_rating, seller_reviews a favoritos para mantener el esquema simple.
       };
 
       const res = await fetch('http://localhost:5000/favorites/add', {
@@ -237,7 +234,7 @@ export default function Home() {
       console.error("Error al agregar a favoritos:", err);
       alert("Error de conexión al intentar agregar a favoritos: " + err);
     }
-  }, [isLoggedIn]); // La dependencia isLoggedIn asegura que la función se re-renderice si el estado de login cambia
+  }, [isLoggedIn]);
 
 
   return (
@@ -316,7 +313,7 @@ export default function Home() {
               )}
             </div>
 
-            {/* Nuevo botón "Encontrar los mejores productos" */}
+            {/*"Encontrar los mejores productos" */}
             <button
               onClick={findBestProducts}
               className="flex items-center px-6 py-3 bg-green-600 text-white rounded-lg text-lg font-medium hover:bg-green-700 transition-colors shadow-sm"
@@ -391,7 +388,7 @@ export default function Home() {
                 
                 <p className="text-sm text-gray-500 mb-2">
                     Vendedor: {p.seller_rating !== null ? `${p.seller_rating} ★` : 'N/A'}
-                    {p.seller_reviews !== null ? ` (${p.seller_reviews} reviews)` : ''}
+                    {p.seller_reviews !== null ? ` ${p.seller_reviews} reviews` : ''}
                 </p>
                 <p className="text-xs text-gray-400 mb-2">Fuente: {p.source}</p>
                 <a
@@ -406,7 +403,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Botón "Mostrar más productos" para paginación */}
+          {/*"Mostrar más productos" */}
           {allResults.length > displayedProductsCount && (
             <div className="flex justify-center mt-8">
               <button
@@ -487,7 +484,7 @@ export default function Home() {
                     )}
                     <p className="text-md text-gray-700 mb-1">
                         Vendedor: {p.seller_rating !== null ? `${p.seller_rating} ★` : 'N/A'}
-                        {p.seller_reviews !== null ? ` (${p.seller_reviews} reviews)` : ''}
+                        {p.seller_reviews !== null ? ` ${p.seller_reviews} reviews` : ''}
                     </p>
                     <p className="text-sm text-blue-700 font-medium mt-3 text-center flex items-center justify-center">
                         <FaLightbulb className="inline-block mr-2 text-yellow-500 text-xl" /> Análisis IA: {p.best_time_to_buy_message}
