@@ -1,4 +1,3 @@
-# backend_api.py
 import random
 from flask import Flask, json, request, jsonify
 from flask_cors import CORS
