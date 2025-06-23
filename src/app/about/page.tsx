@@ -28,17 +28,17 @@ export default function AboutPage() { // Cambiado el nombre del componente a Abo
 
           <div className="max-w-3xl mx-auto text-gray-800 leading-relaxed space-y-6 text-lg">
             <p>
-              Esta aplicación web te ayuda a encontrar los mejores productos en línea mediante un proceso inteligente de recolección y análisis de datos. Aquí te explicamos cómo funciona el scraper que da vida a esta funcionalidad:
+              Esta aplicación web nos ayuda a encontrar los mejores productos en línea mediante un proceso inteligente de recolección y análisis de datos. A continuacion se explica cómo funciona el scraper que da vida a esta funcionalidad:
             </p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">1. Solicitud de Búsqueda</h3>
             <p>
-              Cuando introduces un término en la barra de búsqueda (por ejemplo, laptop Dell o celular Samsung) y presionas buscar (o utilizas la búsqueda por voz), tu solicitud se envía a un servidor backend desarrollado en <strong>Python</strong>.
+              Cuando se introduce un término en la barra de búsqueda (por ejemplo, laptop Dell o celular Samsung) y presionamos buscar (o utilizas la búsqueda por voz), la solicitud se envía a un servidor backend desarrollado en <strong>Python</strong>.
             </p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">2. Web Scraping en Mercado Libre</h3>
             <p>
-              El servidor Python recibe tu término de búsqueda y lo utiliza para construir una URL de búsqueda específica para <strong>Mercado Libre México</strong>. Luego, realiza una solicitud HTTP a esta URL, simulando ser un navegador web.
+              El servidor Python recibe los términos de búsqueda y lo utiliza para construir una URL de búsqueda específica para <strong>Mercado Libre México</strong>. Luego, realiza una solicitud HTTP a esta URL, simulando ser un navegador web.
             </p>
             <p>
               Una vez que obtiene el código HTML de la página de resultados de Mercado Libre, el scraper utiliza la librería <strong>BeautifulSoup</strong> para parsear o analizar este HTML. BeautifulSoup le permite identificar y extraer información relevante de los productos, como:
@@ -58,12 +58,12 @@ export default function AboutPage() { // Cambiado el nombre del componente a Abo
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">3. Procesamiento y Envío al Frontend</h3>
             <p>
-              Toda la información extraída de los productos se organiza en una estructura de datos limpia y se envía de vuelta a tu navegador como una respuesta JSON.
+              Toda la información extraída de los productos se organiza en una estructura de datos limpia y se envía de vuelta al navegador como una respuesta JSON.
             </p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">4. Análisis Inteligente con IA (Gemini API)</h3>
             <p>
-              Cuando haces clic en Encontrar el mejor producto, los datos de los productos que se muestran se envían a la <strong>API de Gemini</strong> (Google AI). La inteligencia artificial analiza estos productos basándose en varios criterios que le proporcionamos, como:
+              Cuando hacemos clic en Encontrar el mejor producto, los datos de los productos que se muestran se envían a la <strong>API de Gemini</strong> (Google AI). La inteligencia artificial analiza estos productos basándose en varios criterios que le proporcionamos, como:
             </p>
             <ul className="list-disc list-inside ml-4 space-y-2">
               <li>Porcentaje de descuento</li>
@@ -71,19 +71,19 @@ export default function AboutPage() { // Cambiado el nombre del componente a Abo
               <li>Puntaje de oferta histórica (simulado para este demo)</li>
             </ul>
             <p>
-              La IA te devuelve una recomendación del mejor producto en ese momento, junto con una explicación detallada de su razonamiento y un consejo sobre el momento de compra.
+              La IA nos devuelve una recomendación del mejor producto en ese momento, junto con una explicación detallada de su razonamiento y un consejo sobre el momento de compra.
             </p>
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">5. Gestión de Favoritos (MongoDB Atlas)</h3>
             <p>
-              Para tus productos favoritos, la aplicación utiliza <strong>MongoDB Atlas</strong>, una base de datos NoSQL basada en la nube.
+              Para los productos favoritos, la aplicación utiliza <strong>MongoDB Atlas</strong>, una base de datos NoSQL basada en la nube.
             </p>
             <ul className="list-disc list-inside ml-4 space-y-2">
               <li>
-                <strong>Almacenamiento:</strong> Cuando añades un producto a favoritos, su información se guarda de forma segura dentro de tu propio perfil de usuario en MongoDB Atlas. Esto significa que tu lista de favoritos es personal y persistente.
+                <strong>Almacenamiento:</strong> Cuando se añade un producto a favoritos, su información se guarda de forma segura dentro del propio perfil de usuario en MongoDB Atlas. Esto significa que la lista de favoritos es personal y persistente.
               </li>
               <li>
-                <strong>Autenticación:</strong> Tu sesión de usuario se gestiona mediante tokens <strong>JWT (JSON Web Tokens)</strong>, lo que garantiza que solo tú puedas acceder y modificar tu lista de favoritos.
+                <strong>Autenticación:</strong> La sesión de usuario se gestiona mediante tokens <strong>JWT (JSON Web Tokens)</strong>, lo que garantiza que podamos acceder y modificar nuestra lista de favoritos.
               </li>
               <li>
                 <strong>Seguridad:</strong> Las contraseñas de los usuarios se almacenan de forma segura utilizando <strong>bcrypt</strong> (un algoritmo de hash de contraseñas), lo que significa que ni siquiera los administradores de la base de datos pueden ver tu contraseña original.
@@ -92,7 +92,7 @@ export default function AboutPage() { // Cambiado el nombre del componente a Abo
 
             <h3 className="text-2xl font-semibold text-blue-600 mt-6 mb-3">En Resumen:</h3>
             <p>
-              Esta aplicación combina el poder del web scraping para recolectar datos de productos, la inteligencia artificial para analizar y recomendar las mejores ofertas, y una base de datos en la nube para gestionar tus preferencias de usuario de forma segura y eficiente.
+              Esta aplicación combina el poder del web scraping para recolectar datos de productos, la inteligencia artificial para analizar y recomendar las mejores ofertas, y una base de datos en la nube para gestionar las preferencias de usuario de forma segura y eficiente.
             </p>
           </div>
         </div>

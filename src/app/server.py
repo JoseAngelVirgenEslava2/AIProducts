@@ -120,7 +120,7 @@ def search_mercadolibre():
                     except ValueError:
                         precio_anterior = None
 
-            link_tag = articulo_tag.find('a', class_='ui-search-link')
+            link_tag = articulo_tag.find('a', class_='poly-component__title')
             product_url = link_tag.get('href') if link_tag else 'N/A'
             
             imagen_tag = articulo_tag.find('img', class_='ui-search-result-image')

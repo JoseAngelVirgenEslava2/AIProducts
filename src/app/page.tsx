@@ -57,6 +57,7 @@ export default function Home() {
 
   const handleSearch = useCallback(async () => {
     if (!query) return;
+    setTopProducts([]);
     setCargando(true);
     setDisplayedProductsCount(PRODUCTS_PER_PAGE);
     setShowFilterOptions(false);
@@ -240,7 +241,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white flex flex-col font-mono">
       <header className="bg-red-600 p-4 text-white text-center text-xl font-bold rounded-b-lg shadow-md">
-        Página web de Análisis de Productos
+        ScrapIA
       </header>
 
       <div className="flex flex-1">
