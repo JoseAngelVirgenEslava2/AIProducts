@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧠 AIProducts – Comparador Inteligente de Precios
 
-## Getting Started
+**AIProducts** es una plataforma web que permite a los usuarios buscar productos desde múltiples sitios (como Mercado Libre), comparar precios, guardar favoritos y recibir recomendaciones personalizadas basadas en inteligencia artificial. Además, permite hacer búsquedas por voz y recibir notificaciones por correo cuando los precios bajan.
 
-First, run the development server:
+---
+
+## 🔍 Características principales
+
+* 🔎 **Búsqueda de productos**
+* 🤖 **Análisis con IA (Gemini)** para recomendar el mejor momento para comprar y el mejor producto
+* 🛒 **Comparación de precios**
+* ❤️ **Favoritos personalizados** por usuario
+* 🔐 Autenticación con **JWT**
+* 🧩 Arquitectura limpia dividida en entidades, servicios, infraestructura y presentación
+
+---
+
+## 🧱 Estructura del proyecto
+
+AIProducts/
+
+│
+
+├── src/
+
+│ ├── app/ # Frontend with Next.js (React + TypeScript)
+
+│ │ ├── api/
+
+│ │ ├── components/ # visual components
+
+│ │ ├── infrastructure/ # Scrapers, JWT manager, email
+
+│ │ ├── models/ # Entities
+
+│ │ ├── services/ # Login, favorites, search
+
+│ │ ├── utils/ # Helpers, sessions
+
+│ │ └── ...
+
+│ ├── server.py (backend)
+
+│
+
+├── .env.local # environment variables
+
+├── package.json # Dependencies
+
+├── README.md
+
+└── ...
+
+---
+
+## 🚀 Instalación y ejecución del proyecto
+
+### 1. Clonar el repositorio
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/JoseAngelVirgenEslava2/AIProducts.git
+```
+2. Instalar las dependencias
+```bash
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Configurar las variables de entorno
+Crea un archivo .env en la raíz con el siguiente contenido:
+```bash
+#JWT
+JWT_SECRET=tu_secreto_seguro
+MONGODB_URI=tu_uri_mongo (Atlas)
+GEMINI_API_KEY=api_key_para_gemini
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. Ejecutar el frontend
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Visita 👉 http://localhost:3000
 
-## Learn More
+🔍 Búsqueda
 
-To learn more about Next.js, take a look at the following resources:
+Después de una búsqueda, puedes presionar “Encontrar el mejor producto”. Se enviará la información al backend (Flask y Gemini API) para obtener el mejor producto y el mejor momento de compra.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+📦 Dependencias clave
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    Frontend: Next.js, React, TailwindCSS, TypeScript
+    Scraping: BeautifulSoup
+    Autenticación: JSON Web Tokens (JWT)
+    Backend Python: Flask, Gemini API, BeautifulSoup
+    
+📄 Licencia
 
-## Deploy on Vercel
+Este proyecto es de uso personal y educativo. Puedes modificarlo, adaptarlo o usarlo como base para tus propias ideas.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+📬 Autor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Desarrollado por José Ángel Virgen Eslava
+GitHub: @JoseAngelVirgenEslava2
